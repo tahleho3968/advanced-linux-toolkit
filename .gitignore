@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Virtual environment
+.linux-toolkit-venv/
+.linux-toolkit-activate
+
+# Logs and reports
+*.log
+*.html
+*.tar.gz
+*.tar
+*.gpg
+*.tmp
+.linux-toolkit-reports/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test files
+tests/test_output/
+*.test
+
+# Local configuration
+config/local_*
+*.local
+
+# Backup directories
+/backup/
+backup_test/
+restore_*/
+
+# Security sensitive
+*.key
+*.pem
+*.crt
+*.p12
+.secrets
+.env

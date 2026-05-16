@@ -1,0 +1,245 @@
+# ============================================================
+# Advanced Linux Toolkit - Extra Bash Configuration
+# Add these to your ~/.bashrc for enhanced shell experience
+# ============================================================
+
+# ------------------------------
+# PATH Configuration
+# ------------------------------
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+
+# ------------------------------
+# History Settings
+# ------------------------------
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
+export HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# ------------------------------
+# Terminal Settings
+# ------------------------------
+export TERM=xterm-256color
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# ------------------------------
+# Prompt Customization
+# ------------------------------
+# Git branch in prompt
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# Custom prompt with colors
+if [ "$USER" = "root" ]; then
+    PS1='\[\033[31m\]\u\[\033[33m\]@\[\033[36m\]\h \[\033[32m\]\w \[\033[33m\]$(parse_git_branch)\[\033[00m\]\$ '
+else
+    PS1='\[\033[32m\]\u\[\033[33m\]@\[\033[36m\]\h \[\033[35m\]\w \[\033[33m\]$(parse_git_branch)\[\033[00m\]\$ '
+fi
+
+# ------------------------------
+# Useful Aliases
+# ------------------------------
+# Navigation
+alias ~="cd ~"
+alias -- -="cd -"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# Listing
+alias ls='ls --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lr='ls -R'
+alias lt='ls -ltr'
+
+# System
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+alias ps='ps aux'
+alias psg='ps aux | grep'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Network
+alias ports='netstat -tulanp'
+alias myip='curl -s ifconfig.me'
+alias localip='ip -4 addr show | grep -oP "(?<=inet\s)\d+(\.\d+){3}" | grep -v "127.0.0.1"'
+
+# Process management
+alias pskill='kill -9'
+alias pgrepm='ps aux | grep -v grep | grep -i'
+
+# Directory shortcuts
+alias dl='cd ~/Downloads'
+alias dt='cd ~/Desktop'
+alias doc='cd ~/Documents'
+alias projects='cd ~/Projects'
+
+# ------------------------------
+# Useful Functions
+# ------------------------------
+# Create directory and cd into it
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Extract various archive formats
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2) tar xjf "$1" ;;
+            *.tar.gz)  tar xzf "$1" ;;
+            *.bz2)     bunzip2 "$1" ;;
+            *.rar)     unrar x "$1" ;;
+            *.gz)      gunzip "$1" ;;
+            *.tar)     tar xf "$1" ;;
+            *.tbz2)    tar xjf "$1" ;;
+            *.tgz)     tar xzf "$1" ;;
+            *.zip)     unzip "$1" ;;
+            *.Z)       uncompress "$1" ;;
+            *.7z)      7z x "$1" ;;
+            *)         echo "Cannot extract '$1' - unknown format" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Find file by name
+ff() {
+    find . -type f -iname "*$1*" 2>/dev/null | grep -i "$1"
+}
+
+# Find directory by name
+fd() {
+    find . -type d -iname "*$1*" 2>/dev/null | grep -i "$1"
+}
+
+# Search in files
+search() {
+    grep -rni --color=always "$1" . 2>/dev/null | less -R
+}
+
+# Backup file with timestamp
+backup() {
+    cp "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)"
+}
+
+# Create a Python virtual environment
+mkvenv() {
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install --upgrade pip
+}
+
+# Show disk usage with human-readable format
+duh() {
+    du -sh "${1:-.}" 2>/dev/null
+}
+
+# Show top 10 largest files/directories
+dubig() {
+    du -sh "${1:-.}"/* 2>/dev/null | sort -rh | head -10
+}
+
+# Monitor log file in real-time with colors
+clog() {
+    tail -f "$1" | while read line; do
+        echo "$line" | grep -E --color=always "ERROR|FATAL|CRITICAL|$"
+    done
+}
+
+# Quick HTTP server
+serve() {
+    local port="${1:-8000}"
+    python3 -m http.server "$port"
+}
+
+# Check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# System info quick view
+sysinfo() {
+    echo "Hostname: $(hostname)"
+    echo "Kernel: $(uname -r)"
+    echo "Uptime: $(uptime -p)"
+    echo "Memory: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+    echo "Disk: $(df -h / | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')"
+    echo "CPU Load: $(uptime | awk -F'load average:' '{print $2}')"
+}
+
+# ------------------------------
+# Completion Enhancements
+# ------------------------------
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    source /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+    source /etc/bash_completion
+fi
+
+# Enable programmable completion features
+if shopt -oq posix; then
+    return
+fi
+
+# SSH completion
+complete -F _ssh ssh
+
+# ------------------------------
+# Environment Variables
+# ------------------------------
+export EDITOR=vim
+export VISUAL=vim
+export PAGER=less
+export BROWSER=firefox
+
+# Less configuration
+export LESS=-R
+export LESSOPEN="| lesspipe %s 2>/dev/null"
+
+# ------------------------------
+# Toolkit Environment Variables
+# ------------------------------
+export TOOLKIT_HOME="$HOME/advanced-linux-toolkit"
+export TOOLKIT_LOGS="/var/log/linux-toolkit"
+export TOOLKIT_BACKUP="/backup"
+
+# Create toolkit directories if they don't exist
+[ -d "$TOOLKIT_LOGS" ] || mkdir -p "$TOOLKIT_LOGS"
+[ -d "$TOOLKIT_BACKUP" ] || mkdir -p "$TOOLKIT_BACKUP"
+
+# ------------------------------
+# Toolkit Aliases (if toolkit is installed)
+# ------------------------------
+if [ -f "$HOME/.bashrc_aliases" ]; then
+    source "$HOME/.bashrc_aliases"
+fi
+
+# ------------------------------
+# Custom Key Bindings
+# ------------------------------
+# Ctrl + L - clear screen (already default)
+# Ctrl + R - reverse search (already default)
+# Ctrl + D - exit (already default)
+
+# Up arrow for history search
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# ------------------------------
+# Welcome Message
+# ------------------------------
+echo -e "\033[32mWelcome back, $USER! \033[0m"
+echo -e "\033[36mSystem: $(lsb_release -ds 2>/dev/null || cat /etc/os-release 2>/dev/null | grep PRETTY_NAME | cut -d'"' -f2) | Uptime: $(uptime -p)\033[0m"

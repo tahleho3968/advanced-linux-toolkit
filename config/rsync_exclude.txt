@@ -1,0 +1,197 @@
+# ============================================================
+# Rsync Exclude File
+# Patterns to exclude when backing up with rsync
+# ============================================================
+
+# System directories
+/proc/*
+/sys/*
+/dev/*
+/tmp/*
+/run/*
+/mnt/*
+/media/*
+/lost+found/
+
+# Virtual filesystems
+*.vdi
+*.vmdk
+*.vbox
+*.qcow2
+
+# Backup and temporary files
+*.bak
+*.backup
+*.old
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.log
+*.log.[0-9]*
+*.gz
+*.bz2
+*.xz
+*.7z
+*.zip
+*.rar
+
+# Cache directories
+.cache/
+__pycache__/
+node_modules/
+bower_components/
+.venv/
+venv/
+env/
+ENV/
+
+# Version control
+.git/
+.svn/
+.hg/
+CVS/
+.gitignore
+.gitattributes
+.gitmodules
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+Icon?
+ehthumbs.db
+*.dll
+*.exe
+*.msi
+*.iso
+
+# Media files (optional - large)
+# *.mp4
+# *.avi
+# *.mkv
+# *.mov
+# *.mp3
+# *.flac
+# *.wav
+
+# Downloads directory
+Downloads/
+.downloads/
+
+# Trash directories
+.Trash/
+.trash/
+Trash/
+
+# Temporary user files
+~/.cache/
+~/.thumbnails/
+~/.local/share/Trash/
+~/.npm/
+~/.cargo/
+~/.gradle/
+
+# Docker files
+docker/
+.docker/
+*.tar.gz
+
+# Compilation artifacts
+*.o
+*.obj
+*.exe
+*.class
+*.pyc
+*.pyo
+*.so
+*.dylib
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files (already rotated)
+/var/log/*.gz
+/var/log/*.old
+/var/log/*.[0-9]
+
+# Private keys and certificates (security)
+*.key
+*.pem
+*.crt
+*.p12
+id_rsa
+id_dsa
+*.pfx
+*.p8
+
+# Configuration with sensitive data
+.secrets
+.env
+.env.local
+.env.production
+config.local.php
+config.local.ini
+
+# Large package manager caches
+/var/cache/apt/archives/*.deb
+/var/cache/yum/*
+/var/cache/dnf/*
+~/.m2/repository/
+
+# Core dumps
+core
+core.*
+
+# Swap files
+swapfile
+.swap
+
+# Hibernation file
+hiberfil.sys
+pagefile.sys
+
+# System restore points
+System Volume Information/
+$Recycle.Bin/
+
+# Network shares
+.ftpquota
+.nfs*
+
+# Python virtual environments
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Ruby
+.bundle/
+Gemfile.lock
+vendor/bundle/
+
+# Go
+vendor/
