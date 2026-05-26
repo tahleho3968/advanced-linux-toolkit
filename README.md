@@ -87,6 +87,15 @@ cd advanced-linux-toolkit
 # Run auto setup (installs dependencies)
 ./scripts/auto_setup.sh
 
+# Grant permission to permissions.sh
+chmod + permissions.sh
+
+# Run permissions to grant all the scripts permissions
+./permissions.sh
+
+# Run auto setup (installs dependencies)
+./scripts/auto_setup.sh
+
 # Install all scripts
 make install
 
