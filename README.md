@@ -88,7 +88,7 @@ cd advanced-linux-toolkit
 ./scripts/auto_setup.sh
 
 # Grant permission to permissions.sh
-chmod + permissions.sh
+chmod +x permissions.sh
 
 # Run permissions to grant all the scripts permissions
 ./permissions.sh
